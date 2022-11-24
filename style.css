@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Bungee&family=Bungee+Inline&display=swap');
+
+body{
+    margin: 0;
+    padding: 0;
+    font-family: 'Bungee', cursive;
+
+    background: no-repeat center center fixed;
+    background-image: radial-gradient(#fdfdfd, #3e3f55);
+
+    /* to remove unwanted highlighting of text */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+footer{
+    align-content: center;
+    position: fixed;
+    display: grid;
+    left: 0;
+    bottom: 0;
+    height: 30px;
+    width: 100%;
+    background-color: rgba(151, 154, 167);
+    font-size: 18px;
+    grid-template-areas: "footer_left footer_middle footer_right";
+    grid-template-columns: 1fr 30px 1fr;
+}
+
+footer p{
+    grid-area: footer_left;
+    text-align: end;
+    margin: 0px; 
+    padding-top: 5px;
+}
+
+.githubLogo{
+    grid-area: footer_middle;
+    height: 20px;
+    justify-self: center;
+    align-self: center;
+}
+
+footer a{
+    grid-area: footer_right;
+    text-align: left;
+    margin: 0px; 
+    padding-top: 5px;
+}
