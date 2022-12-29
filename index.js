@@ -1,64 +1,96 @@
-function operate(aStr, operator, bStr){
-    let a = parseFloat(aStr);
-    let b = parseFloat(bStr);
+function operate(){
+    let a = parseFloat(calcMemory.mem1);
+    let b = parseFloat(calcMemory.mem2);
+    let operator = calcMemory.operator;
+    let result;
+
     switch (operator){
-        case '+': return a + b;
-        case '-': return a - b;
-        case '*': return a * b;
-        case '/': return a / b;
+        case '+': 
+            result = (a + b).toFixed(0);
+            break;
+        case '-': 
+            result =  a - b;
+            break;
+        case '*': 
+            result =  a * b;
+            break;
+        case '/': 
+            result =  a / b;
+            break;
+        case '=':
+            result = a;
+            break;
+        case null:
+            result = a;
+            break;
     }
+
+    clearMemory();
+    calcDisplay.innerText = result
+    calcMemory.mem1 = result;
+
 };
 
-function recordButton(event){
+
+
+function handleButton(event){
 
     if (event.target.value === 'Clear'){
-        document.getElementById('calculation').innerText = '';
-        runningCalculation.a = null;
-        runningCalculation.b = null;
-        runningCalculation.operator = null;
-        runningCalculation.memory = '';
+        clearDisplay();
+        clearMemory();
         return;
     }
 
-
-    if (['+','-','*','/','='].includes(event.target.value)){
-        
-
-        if (!runningCalculation.a ){
-            runningCalculation.a = runningCalculation.memory;
-            document.getElementById('calculation').innerText = '';
-        }else{
-            runningCalculation.b = runningCalculation.memory;
-            document.getElementById('calculation').innerText = '';
-        }  
-
-        if (runningCalculation.a && runningCalculation.b && runningCalculation.operator){
-            runningCalculation.a = operate(runningCalculation.a, runningCalculation.operator, runningCalculation.b)
-            runningCalculation.operator = event.target.value;
-            runningCalculation.b = null;
-            runningCalculation.memory = '';
-            //document.getElementById('calculation').innerText = runningCalculation.a ;
-           
-        }
-        if (event.target.value !== '=') {
-            runningCalculation.operator = event.target.value;
-        }
-        runningCalculation.memory = '';
-    }else{
-        runningCalculation.memory += event.target.value;
-        document.getElementById('calculation').innerText += event.target.value;
-        }
     
-  
-   
+    if (['+','-','*','/', '='].includes(event.target.value)){
+
+        if (event.target.value === '=' && calcMemory.mem1 && calcMemory.mem2){
+            operate();
+            return;
+        }
+       
+        if (!calcMemory.mem1){
+            calcMemory.mem1 = calcDisplay.innerText;
+            clearDisplay()
+        }else if (calcMemory.mem1 && !calcMemory.mem2){
+            calcMemory.mem2 = calcDisplay.innerText;
+            clearDisplay();
+        }
+
+        if (calcMemory.mem1 && calcMemory.mem2){
+            operate();
+        }
+        
+        if (event.target.value !== '='){
+            calcMemory.operator = event.target.value;
+        }
+
+        
+    }else{ // numbers
+        if (calcMemory.mem1 && calcDisplay.innerText !== ''){
+            calcDisplay.innerText = '';
+        }
+        calcDisplay.innerText += event.target.value;
+    }
+}
+
+
+
+function clearMemory(){
+    Object.keys(calcMemory).forEach((i) => calcMemory[i] = null);
+}
+
+
+function clearDisplay(){
+    calcDisplay.innerText = '';
 }
 
 
 // init
-const runningCalculation = {a:null, b:null, operator:null, memory:''};
+const calcMemory = {mem1:null, mem2:null, operator:null};
+const calcDisplay = document.getElementById('calculation');
 window.onload = document.getElementById('calcInputForm').addEventListener('mouseup', (event) => {
     if (event.target.type === 'button'){
-        recordButton(event);
-        console.log(runningCalculation);
+        handleButton(event);
     }
 });
