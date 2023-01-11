@@ -1,23 +1,32 @@
-function handleButton(event){
+function handleInput(buttonPress){
+
     // reset and clear display
-    if (event.target.value === 'Clear'){
+    if (buttonPress === 'Clear'){
         calcDisplay.innerText = '';
         clearMemory();
         return;
     }
 
-    
+    // del button, only if input in memory otherwise nothing to delete
+    else if (buttonPress === 'Del'){
+        if (calcMemory.userInput){
+            newStr = calcMemory.userInput.substring(0,calcMemory.userInput.length-1);
+            calcMemory.userInput = newStr;
+            updateDisplay(calcMemory.userInput);
+            }
+        return;
+    }
 
     // if an operater is pressed, treat like '=' sign if certain conditions are met
     // To behave more like a calc that are in use, rather than pressing '=' each time.
-    if (['+','-','*','/', '='].includes(event.target.value)){
+    else if (['+','-','*','/', '='].includes(buttonPress)){
 
 
         // clear the decimal memory so new input can have decimal, after each operator press
         calcMemory.decimal = '';
 
 
-        if (event.target.value === '=' && calcMemory.mem1 && calcMemory.mem2){
+        if (buttonPress === '=' && calcMemory.mem1 && calcMemory.mem2){
             // simple '=' operation
             operate();
             return;
@@ -46,17 +55,17 @@ function handleButton(event){
             operate();
         }
         
-        if (event.target.value !== '='){
+        if (buttonPress!== '='){
             // save the operator to be calculated on next operator or '=' press
             // overwrites previous operator, i.e. if user changes mind on which
             // operator they wished to use for calculation
-            calcMemory.operator = event.target.value;
+            calcMemory.operator = buttonPress
         }
 
     }else{ 
         // numbers input, keep logging until operator pressed
 
-        if (event.target.value === '.'){
+        if (buttonPress=== '.'){
             // only log one decimal
             if (calcMemory.decimal){
                 return;
@@ -65,7 +74,7 @@ function handleButton(event){
             }
         }
 
-        calcMemory.userInput += event.target.value;
+        calcMemory.userInput += buttonPress;
         updateDisplay(calcMemory.userInput);
     }
 }
@@ -128,8 +137,29 @@ function updateDisplay(text){
 const calcMemory = {mem1:'', mem2:'', operator:'', userInput:'', decimal:''};
 const calcDisplay = document.getElementById('calculation');
 
-window.onload = document.getElementById('calcInputForm').addEventListener('mouseup', (event) => {
+window.onload = function(){
+    
+    document.getElementById('calcInputForm').addEventListener('mouseup', (event) => {
     if (event.target.type === 'button'){
-        handleButton(event);
+        handleInput(event.target.value);
+        }
+    });
+
+    // keyboard support
+    document.addEventListener('keyup', (event) => {
+        keyPress = event.key;
+        if (['Backspace','Delete'].includes(event.key)){
+            keyPress = 'Del';
+        }
+        else if (['=','Enter'].includes(event.key)){
+            keyPress = '=';
+        }
+        //ignore any other input not in list
+        else if (!['+','-','*','/','.','0','1','2','3','4','5','6','7','8','9'].includes(keyPress)){
+            return; 
+        }
+        handleInput(keyPress);
+        });
     }
-});
+    
+// TODO: Simplify and reduce code
