@@ -20,7 +20,7 @@ function handleButton(event){
             // mem1 not set then store numbers input up to this point and 
             // then clear displayMemory for re-use, keep the input numbers
             // on the display
-            calcMemory.mem1 = calcMemory.displayText;
+            calcMemory.mem1 = calcMemory.userInput;
             clearDisplayMemory();
 
 
@@ -28,7 +28,7 @@ function handleButton(event){
             // mem2 not set then store numbers input up to this point and 
             // then clear displayMemory for re-use, keep the input numbers
             // on the display
-            calcMemory.mem2 = calcMemory.displayText;
+            calcMemory.mem2 = calcMemory.userInput;
             clearDisplayMemory();
         }
 
@@ -46,10 +46,9 @@ function handleButton(event){
 
     }else{ 
         // numbers input, keep logging until operator pressed
-        calcMemory.displayText += event.target.value;
-        updateDisplay(calcMemory.displayText);
+        calcMemory.userInput += event.target.value;
+        updateDisplay(calcMemory.userInput);
     }
-    console.log(calcMemory)
 }
 
 
@@ -98,7 +97,7 @@ function clearMemory(){
 }
 
 function clearDisplayMemory(){
-    calcMemory.displayText = '';
+    calcMemory.userInput = '';
 }
 
 function updateDisplay(text){
@@ -106,7 +105,7 @@ function updateDisplay(text){
 }
 
 // init
-const calcMemory = {mem1:'', mem2:'', operator:'', displayText:''};
+const calcMemory = {mem1:'', mem2:'', operator:'', userInput:''};
 const calcDisplay = document.getElementById('calculation');
 
 window.onload = document.getElementById('calcInputForm').addEventListener('mouseup', (event) => {
