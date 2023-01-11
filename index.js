@@ -6,9 +6,16 @@ function handleButton(event){
         return;
     }
 
+    
+
     // if an operater is pressed, treat like '=' sign if certain conditions are met
     // To behave more like a calc that are in use, rather than pressing '=' each time.
     if (['+','-','*','/', '='].includes(event.target.value)){
+
+
+        // clear the decimal memory so new input can have decimal, after each operator press
+        calcMemory.decimal = '';
+
 
         if (event.target.value === '=' && calcMemory.mem1 && calcMemory.mem2){
             // simple '=' operation
@@ -28,6 +35,8 @@ function handleButton(event){
             // mem2 not set then store numbers input up to this point and 
             // then clear displayMemory for re-use, keep the input numbers
             // on the display
+
+            
             calcMemory.mem2 = calcMemory.userInput;
             clearDisplayMemory();
         }
@@ -46,6 +55,16 @@ function handleButton(event){
 
     }else{ 
         // numbers input, keep logging until operator pressed
+
+        if (event.target.value === '.'){
+            // only log one decimal
+            if (calcMemory.decimal){
+                return;
+            }else{
+                calcMemory.decimal = true;
+            }
+        }
+
         calcMemory.userInput += event.target.value;
         updateDisplay(calcMemory.userInput);
     }
@@ -83,7 +102,8 @@ function operate(){
     // clear the calcMemory obj, then store above result to mem1 
     // for future use, update the display with the result
     clearMemory();
-    //Infinity
+
+    // divide by zero
     if (result === Infinity){
         updateDisplay('Stop Trying To Break My Stuff!');
         return;
@@ -105,7 +125,7 @@ function updateDisplay(text){
 }
 
 // init
-const calcMemory = {mem1:'', mem2:'', operator:'', userInput:''};
+const calcMemory = {mem1:'', mem2:'', operator:'', userInput:'', decimal:''};
 const calcDisplay = document.getElementById('calculation');
 
 window.onload = document.getElementById('calcInputForm').addEventListener('mouseup', (event) => {
@@ -113,5 +133,3 @@ window.onload = document.getElementById('calcInputForm').addEventListener('mouse
         handleButton(event);
     }
 });
-
-//TODO: FLOATING POINT NUMBERS
