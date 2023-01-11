@@ -1,4 +1,60 @@
+function handleButton(event){
+    // reset and clear display
+    if (event.target.value === 'Clear'){
+        calcDisplay.innerText = '';
+        clearMemory();
+        return;
+    }
+
+    // if an operater is pressed, treat like '=' sign if certain conditions are met
+    // To behave more like a calc that are in use, rather than pressing '=' each time.
+    if (['+','-','*','/', '='].includes(event.target.value)){
+
+        if (event.target.value === '=' && calcMemory.mem1 && calcMemory.mem2){
+            // simple '=' operation
+            operate();
+            return;
+        }
+       
+        if (!calcMemory.mem1){
+            // mem1 not set then store numbers input up to this point and 
+            // then clear displayMemory for re-use, keep the input numbers
+            // on the display
+            calcMemory.mem1 = calcMemory.displayText;
+            clearDisplayMemory();
+
+
+        }else if (calcMemory.mem1 && !calcMemory.mem2){
+            // mem2 not set then store numbers input up to this point and 
+            // then clear displayMemory for re-use, keep the input numbers
+            // on the display
+            calcMemory.mem2 = calcMemory.displayText;
+            clearDisplayMemory();
+        }
+
+        if (calcMemory.mem1 && calcMemory.mem2){
+            // all conditions met to be able to perform a calculation
+            operate();
+        }
+        
+        if (event.target.value !== '='){
+            // save the operator to be calculated on next operator or '=' press
+            // overwrites previous operator, i.e. if user changes mind on which
+            // operator they wished to use for calculation
+            calcMemory.operator = event.target.value;
+        }
+
+    }else{ 
+        // numbers input, keep logging until operator pressed
+        calcMemory.displayText += event.target.value;
+        updateDisplay(calcMemory.displayText);
+    }
+    console.log(calcMemory)
+}
+
+
 function operate(){
+    // called once calcMemory obj has mem1, mem2 and an operator
     let a = parseFloat(calcMemory.mem1);
     let b = parseFloat(calcMemory.mem2);
     let operator = calcMemory.operator;
@@ -6,7 +62,7 @@ function operate(){
 
     switch (operator){
         case '+': 
-            result = (a + b).toFixed(0);
+            result = (a + b).toString();
             break;
         case '-': 
             result =  a - b;
@@ -25,72 +81,38 @@ function operate(){
             break;
     }
 
+    // clear the calcMemory obj, then store above result to mem1 
+    // for future use, update the display with the result
     clearMemory();
-    calcDisplay.innerText = result
-    calcMemory.mem1 = result;
-
-};
-
-
-
-function handleButton(event){
-
-    if (event.target.value === 'Clear'){
-        clearDisplay();
-        clearMemory();
+    //Infinity
+    if (result === Infinity){
+        updateDisplay('Stop Trying To Break My Stuff!');
         return;
     }
-
-    
-    if (['+','-','*','/', '='].includes(event.target.value)){
-
-        if (event.target.value === '=' && calcMemory.mem1 && calcMemory.mem2){
-            operate();
-            return;
-        }
-       
-        if (!calcMemory.mem1){
-            calcMemory.mem1 = calcDisplay.innerText;
-            clearDisplay()
-        }else if (calcMemory.mem1 && !calcMemory.mem2){
-            calcMemory.mem2 = calcDisplay.innerText;
-            clearDisplay();
-        }
-
-        if (calcMemory.mem1 && calcMemory.mem2){
-            operate();
-        }
-        
-        if (event.target.value !== '='){
-            calcMemory.operator = event.target.value;
-        }
-
-        
-    }else{ // numbers
-        if (calcMemory.mem1 && calcDisplay.innerText !== ''){
-            calcDisplay.innerText = '';
-        }
-        calcDisplay.innerText += event.target.value;
-    }
-}
-
-
+    calcMemory.mem1 = result;
+    updateDisplay(result);
+};
 
 function clearMemory(){
-    Object.keys(calcMemory).forEach((i) => calcMemory[i] = null);
+    Object.keys(calcMemory).forEach((i) => calcMemory[i] = '');
 }
 
-
-function clearDisplay(){
-    calcDisplay.innerText = '';
+function clearDisplayMemory(){
+    calcMemory.displayText = '';
 }
 
+function updateDisplay(text){
+    calcDisplay.innerText = text;
+}
 
 // init
-const calcMemory = {mem1:null, mem2:null, operator:null};
+const calcMemory = {mem1:'', mem2:'', operator:'', displayText:''};
 const calcDisplay = document.getElementById('calculation');
+
 window.onload = document.getElementById('calcInputForm').addEventListener('mouseup', (event) => {
     if (event.target.type === 'button'){
         handleButton(event);
     }
 });
+
+//TODO: FLOATING POINT NUMBERS
