@@ -27,52 +27,41 @@ function handleInput(buttonPress){
 
 
         if (buttonPress === '=' && calcMemory.mem1 && calcMemory.mem2){
-            // simple '=' operation
             operate();
             return;
+        // simple '=' operation
         }
        
-        if (!calcMemory.mem1){
+        if (!calcMemory.mem1){calcMemory.mem1 = calcMemory.userInput;
+            clearDisplayMemory();
             // mem1 not set then store numbers input up to this point and 
             // then clear displayMemory for re-use, keep the input numbers
             // on the display
-            calcMemory.mem1 = calcMemory.userInput;
-            clearDisplayMemory();
-
-
-        }else if (calcMemory.mem1 && !calcMemory.mem2){
-            // mem2 not set then store numbers input up to this point and 
-            // then clear displayMemory for re-use, keep the input numbers
-            // on the display
-
             
+        }else if (calcMemory.mem1 && !calcMemory.mem2){
             calcMemory.mem2 = calcMemory.userInput;
-            clearDisplayMemory();
-        }
+            clearDisplayMemory();}
+        // mem2 not set then store numbers input up to this point and 
+        // then clear displayMemory for re-use, keep the input numbers
+        // on the display
 
-        if (calcMemory.mem1 && calcMemory.mem2){
-            // all conditions met to be able to perform a calculation
-            operate();
-        }
         
-        if (buttonPress!== '='){
-            // save the operator to be calculated on next operator or '=' press
-            // overwrites previous operator, i.e. if user changes mind on which
-            // operator they wished to use for calculation
-            calcMemory.operator = buttonPress
-        }
+        if (calcMemory.mem1 && calcMemory.mem2){operate()}
+        // all conditions met to be able to perform a calculation
+            
+        
+        if (buttonPress!== '='){calcMemory.operator = buttonPress}
+        // save the operator to be calculated on next operator or '=' press
+        // overwrites previous operator, i.e. if user changes mind on which
+        // operator they wished to use for calculation
+        
 
     }else{ 
         // numbers input, keep logging until operator pressed
 
-        if (buttonPress=== '.'){
+        if (buttonPress=== '.'){if (calcMemory.decimal){return}
+            else{calcMemory.decimal = true}}
             // only log one decimal
-            if (calcMemory.decimal){
-                return;
-            }else{
-                calcMemory.decimal = true;
-            }
-        }
 
         calcMemory.userInput += buttonPress;
         updateDisplay(calcMemory.userInput);
@@ -87,26 +76,13 @@ function operate(){
     let operator = calcMemory.operator;
     let result;
 
-    switch (operator){
-        case '+': 
-            result = (a + b).toString();
-            break;
-        case '-': 
-            result =  a - b;
-            break;
-        case '*': 
-            result =  a * b;
-            break;
-        case '/': 
-            result =  a / b;
-            break;
-        case '=':
-            result = a;
-            break;
-        case null:
-            result = a;
-            break;
-    }
+    switch (operator)
+    {case '+': result = (a + b).toString(); break;
+    case '-': result =  a - b; break;
+    case '*': result =  a * b; break;
+    case '/': result =  a / b; break;
+    case '=': result = a; break;
+    case null: result = a; break}
 
     // clear the calcMemory obj, then store above result to mem1 
     // for future use, update the display with the result
@@ -121,45 +97,30 @@ function operate(){
     updateDisplay(result);
 };
 
-function clearMemory(){
-    Object.keys(calcMemory).forEach((i) => calcMemory[i] = '');
-}
 
-function clearDisplayMemory(){
-    calcMemory.userInput = '';
-}
+function clearMemory() {Object.keys(calcMemory).forEach((i) => calcMemory[i] = '')}
 
-function updateDisplay(text){
-    calcDisplay.innerText = text;
-}
+function clearDisplayMemory() {calcMemory.userInput = ''}
+
+function updateDisplay(text) {calcDisplay.innerText = text}
+
 
 // init
 const calcMemory = {mem1:'', mem2:'', operator:'', userInput:'', decimal:''};
 const calcDisplay = document.getElementById('calculation');
 
+
 window.onload = function(){
-    
     document.getElementById('calcInputForm').addEventListener('mouseup', (event) => {
-    if (event.target.type === 'button'){
-        handleInput(event.target.value);
-        }
-    });
+        if (event.target.type === "button") handleInput(event.target.value)}),
 
     // keyboard support
     document.addEventListener('keyup', (event) => {
-        keyPress = event.key;
-        if (['Backspace','Delete'].includes(event.key)){
-            keyPress = 'Del';
-        }
-        else if (['=','Enter'].includes(event.key)){
-            keyPress = '=';
-        }
+        if (keyPress = event.key, ['Backspace','Delete'].includes(event.key)) keyPress = 'Del'; 
+        else if (["=","Enter"].includes(event.key)) keyPress = "=";
+
         //ignore any other input not in list
-        else if (!['+','-','*','/','.','0','1','2','3','4','5','6','7','8','9'].includes(keyPress)){
-            return; 
-        }
-        handleInput(keyPress);
-        });
-    }
+        else if (!['+','-','*','/','.','0','1','2','3','4','5','6','7','8','9'].includes(keyPress)) return;
+
+        handleInput(keyPress)})};
     
-// TODO: Simplify and reduce code
