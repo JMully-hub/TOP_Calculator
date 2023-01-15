@@ -94,6 +94,10 @@ function operate(){
         return;
     }
     calcMemory.mem1 = result;
+
+    // No more than 9 decimal places for display but only if decimal
+    // 10000.0000000067 will still expand the grid
+    result = Math.round(result*10000000000)/10000000000;
     updateDisplay(result);
 };
 
@@ -104,15 +108,27 @@ function clearDisplayMemory() {calcMemory.userInput = ''}
 
 function updateDisplay(text) {calcDisplay.innerText = text}
 
+function opacityFeedback(event){
+    for (let index = 0; index < inputButtons.length; index++) {
+        if(inputButtons[index].style.opacity !== 1){
+            inputButtons[index].style.opacity = 1
+        }
+    }
+    event.target.style.opacity = 0.5
+}
+
 
 // init
 const calcMemory = {mem1:'', mem2:'', operator:'', userInput:'', decimal:''};
 const calcDisplay = document.getElementById('calculation');
-
+const inputButtons = document.getElementsByTagName("input");
 
 window.onload = function(){
-    document.getElementById('calcInputForm').addEventListener('mouseup', (event) => {
-        if (event.target.type === "button") handleInput(event.target.value)}),
+    document.getElementById('calcContainer').addEventListener('mouseup', (event) => {
+        if (event.target.type === "button"){
+            opacityFeedback(event)
+            handleInput(event.target.value)}
+        }),
 
     // keyboard support
     document.addEventListener('keyup', (event) => {
@@ -122,5 +138,7 @@ window.onload = function(){
         //ignore any other input not in list
         else if (!['+','-','*','/','.','0','1','2','3','4','5','6','7','8','9'].includes(keyPress)) return;
 
-        handleInput(keyPress)})};
-    
+        handleInput(keyPress)})
+    };
+    //TODO - IMPROVE CSS OPACITY STYLING - MAYBE USE TRANISITION INSTEAD
+    //TODO BUG - AFTER A CALCUALTION END AFTER USING = AND THEN PRESSING ANOTHER NUMBER AND EQUALS GIVES NAN 

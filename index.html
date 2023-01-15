@@ -7,33 +7,37 @@
     <title>Mully's Calculator</title>
     <link rel="stylesheet" href="style.css">
   </head>
-  <body>
-    <div>
-      <form action="#" id="calcInputForm" onsubmit="return false" >
-        <input class="number" type="button" value=1>
-        <input class="number" type="button" value=2>
-        <input class="number" type="button" value=3>
-        <input class="number" type="button" value=4>
-        <input class="number" type="button" value=5>
-        <input class="number" type="button" value=6>
-        <input class="number" type="button" value=7>
-        <input class="number" type="button" value=8>
-        <input class="number" type="button" value=9>
-        <input class="number" type="button" value=0>
-        <input class="number" type="button" value=.>
-        <input class="operator" type="button" value='+'>
-        <input class="operator" type="button" value='-'>
-        <input class="operator" type="button" value='/'>
-        <input class="operator" type="button" value='*'>
-        <input class="do" type="button" value='='>
-        <input class="do" type="button" value='Del'>
-        <input class="do" type="button" value='Clear'>
-    </form>
+  <body class="pageGrid">
+    <div class="top">Mully's Calculator</div>
+    <div class="calcContainer" id="calcContainer">
+        <p id="calculation"></p>
+        <div id="delButtons">
+          <input class="delButton" type="button" value='Del'>
+          <input class="delButton" type="button" value='Clear'>
+        </div>
+        <div id="numButtons">
+          <input class="numButton" type="button" value=7>
+          <input class="numButton" type="button" value=8>
+          <input class="numButton" type="button" value=9>
+          <input class="numButton" type="button" value=4>
+          <input class="numButton" type="button" value=5>
+          <input class="numButton" type="button" value=6>
+          <input class="numButton" type="button" value=1>
+          <input class="numButton" type="button" value=2>
+          <input class="numButton" type="button" value=3>
+          <input class="zeroButton" type="button" value=0>
+          <input class="numButton" type="button" value=.>
+        </div>
+        <div id="operatorButtons">
+          <input class="operatorButton" type="button" value='/'>
+          <input class="operatorButton" type="button" value='*'>
+          <input class="operatorButton" type="button" value='-'>
+          <input class="operatorButton" type="button" value='+'>
+          <input class="operatorButton" type="button" value='='>
+        </div>
+        </div>
     </div>
-    <div>
-      <p id="calculation"></p>
-      <p id="answer"></p>
-    </div>
+    <div class="bottom">Use your keyboard!</div>
 	<script src="index.js"></script>
   </body>
   <footer>

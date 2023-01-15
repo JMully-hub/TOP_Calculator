@@ -17,6 +17,122 @@ body{
     user-select: none;
 }
 
+.pageGrid{
+    display: grid;
+    width: 100vw; 
+    min-width: 630px;
+    grid-template-columns: 1fr 500px 1fr;
+    grid-template-rows: 200px 650px auto;
+    position: relative;
+    justify-items: center;
+    grid-template-areas:
+    "top_title top_title top_title"
+    "left_middle middle_content right_middle"
+    "bottom_space bottom_space bottom_space";
+}
+
+.top{
+    margin: 10px;
+    display: block;
+    grid-area: top_title;
+    display: flex;
+    align-items:center;
+    justify-content: center;
+    width: 100%;    
+    font-family: 'Bungee Inline', cursive;
+    font-size:50px;
+    line-height: 50px;
+    color: #e03131;
+    text-shadow: -1px -1px 0 #331d1d, 1px -1px 0 #331d1d, -1px 1px 0 #331d1d, 1px 1px 0 #331d1d;
+}
+
+.calcContainer{
+    padding: 15px;
+    grid-area: middle_content;
+    width: 100%;
+    display: grid;
+    grid-template-areas:
+    "calc_area calc_area"
+    "del_area operator_area"
+    "num_area operator_area"
+    "num_area operator_area"
+    "num_area operator_area"
+    "num_area operator_area";
+    grid-template-columns: 3fr 1fr;
+    background-color: #000000fd;
+    border-radius: 50px;
+}
+
+
+#calculation{
+    grid-area: calc_area;
+    margin: 30px;
+    display: flex; 
+    align-items:center;
+    padding-left: 10px;
+    background-color: darkgrey;
+    border-radius: 10px;
+    height: 60px;
+    font-size: 40px;
+}
+
+input{
+    height: 80px;
+    width: 100px;
+    border-radius: 40px;
+    margin: 5px;
+    cursor: pointer;
+    border-color: #222222fd;
+}
+/* input:mouseup{
+    opacity: 0.8;
+} */
+
+#delButtons{
+    grid-area: del_area;
+    
+}
+.delButton{
+    background-color: #da6f6f;
+    width: 170px;
+}
+
+#numButtons{
+    grid-area: num_area;
+   
+}
+.numButton{
+    background-color: #3e3f55;
+}
+.zeroButton{
+    background-color: #3e3f55;
+    width: 210px;
+  
+}
+#operatorButtons{
+    grid-area: operator_area;
+   
+}
+.operatorButton{
+    background-color: chocolate;
+}
+
+.bottom{
+    grid-area: bottom_space;
+    margin: 10px;
+    display: block;
+    display: flex;
+    align-items:center;
+    justify-content: center;
+    width: 100%;    
+    font-family: 'Bungee Inline', cursive;
+    font-size:30px;
+    line-height: 50px;
+    color: #e03131;
+    text-shadow: -1px -1px 0 #331d1d, 1px -1px 0 #331d1d, -1px 1px 0 #331d1d, 1px 1px 0 #331d1d;
+}
+
+
 footer{
     align-content: center;
     position: fixed;
