@@ -17,6 +17,7 @@ function handleInput(buttonPress){
         return;
     }
 
+    
     // if an operater is pressed, treat like '=' sign if certain conditions are met
     // To behave more like a calc that are in use, rather than pressing '=' each time.
     else if (['+','-','*','/', '='].includes(buttonPress)){
@@ -25,8 +26,18 @@ function handleInput(buttonPress){
         // clear the decimal memory so new input can have decimal, after each operator press
         calcMemory.decimal = '';
 
+        
+        if(calcMemory.mem1 && calcMemory.userInput && !calcMemory.operator ){
+            // Only occurs once "=" is pressed, then user enters a number 
+            // (not continuing the calculation by using the displayed number followed by an operator).
+            // Expects a fresh calculation to take place
+            calcMemory.mem1 = calcMemory.userInput
+            calcMemory.userInput = '';
+            calcMemory.operator = buttonPress;
+            return
+        }
 
-        if (buttonPress === '=' && calcMemory.mem1 && calcMemory.mem2){
+        if (buttonPress === '=' && calcMemory.mem1 && calcMemory.mem2){25
             operate();
             return;
         // simple '=' operation
@@ -65,6 +76,7 @@ function handleInput(buttonPress){
 
         calcMemory.userInput += buttonPress;
         updateDisplay(calcMemory.userInput);
+        console.log(calcMemory);
     }
 }
 
@@ -99,6 +111,7 @@ function operate(){
     // 10000.0000000067 will still expand the grid
     result = Math.round(result*10000000000)/10000000000;
     updateDisplay(result);
+    console.log(calcMemory);
 };
 
 
@@ -108,16 +121,6 @@ function clearDisplayMemory() {calcMemory.userInput = ''}
 
 function updateDisplay(text) {calcDisplay.innerText = text}
 
-function opacityFeedback(event){
-    for (let index = 0; index < inputButtons.length; index++) {
-        if(inputButtons[index].style.opacity !== 1){
-            inputButtons[index].style.opacity = 1
-        }
-    }
-    event.target.style.opacity = 0.5
-}
-
-
 // init
 const calcMemory = {mem1:'', mem2:'', operator:'', userInput:'', decimal:''};
 const calcDisplay = document.getElementById('calculation');
@@ -126,7 +129,7 @@ const inputButtons = document.getElementsByTagName("input");
 window.onload = function(){
     document.getElementById('calcContainer').addEventListener('mouseup', (event) => {
         if (event.target.type === "button"){
-            opacityFeedback(event)
+
             handleInput(event.target.value)}
         }),
 
@@ -140,5 +143,3 @@ window.onload = function(){
 
         handleInput(keyPress)})
     };
-    //TODO - IMPROVE CSS OPACITY STYLING - MAYBE USE TRANISITION INSTEAD
-    //TODO BUG - AFTER A CALCUALTION END AFTER USING = AND THEN PRESSING ANOTHER NUMBER AND EQUALS GIVES NAN 
