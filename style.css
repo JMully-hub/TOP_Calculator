@@ -8,13 +8,7 @@ body{
     background: no-repeat center center fixed;
     background-image: radial-gradient(#fdfdfd, #3e3f55);
 
-    /* to remove unwanted highlighting of text */
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+  
 }
 
 .pageGrid{
@@ -54,20 +48,20 @@ body{
     grid-template-areas:
     "calc_area calc_area"
     "del_area operator_area"
-    "num_area operator_area"
-    "num_area operator_area"
-    "num_area operator_area"
     "num_area operator_area";
     grid-template-columns: 3fr 1fr;
     background-color: #000000fd;
     border-radius: 50px;
+
+
+    
 }
 
 
 #calculation{
     grid-area: calc_area;
     margin: 30px;
-    display: flex; 
+    /* display: flex;  */
     align-items:center;
     padding-left: 10px;
     background-color: darkgrey;
@@ -76,41 +70,77 @@ body{
     font-size: 40px;
 }
 
-input{
+button{
+    font-family: 'Bungee', cursive;
+    font-size: 30px;
     height: 80px;
     width: 100px;
     border-radius: 40px;
-    margin: 5px;
     cursor: pointer;
-    border-color: #222222fd;
+    border: none;
+    
 }
-/* input:mouseup{
-    opacity: 0.8;
-} */
+
+button:focus {
+    outline: none;
+  }
+
+button:hover{
+    opacity: 0.7;
+}
+
+button:active,  .keyBoardActive{
+    opacity: 0.7;
+    box-shadow: 0 5px rgb(173, 173, 173);
+    transform: translateY(4px);
+  }
+  
 
 #delButtons{
     grid-area: del_area;
-    
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 10px;
+    align-items: center;
 }
 .delButton{
     background-color: #da6f6f;
-    width: 170px;
+    width: 162.5px;
 }
 
 #numButtons{
-    grid-area: num_area;
-   
+    grid-area: num_area; 
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 5px;
+    
+  
 }
 .numButton{
-    background-color: #3e3f55;
+    margin-bottom: 10px;
+    background-color: #666780;
+    
 }
 .zeroButton{
-    background-color: #3e3f55;
+    background-color: #666780;
     width: 210px;
   
 }
 #operatorButtons{
     grid-area: operator_area;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin:10px;
+    padding: 0;
+    align-items: center;
    
 }
 .operatorButton{

@@ -22,10 +22,8 @@ function handleInput(buttonPress){
     // To behave more like a calc that are in use, rather than pressing '=' each time.
     else if (['+','-','*','/', '='].includes(buttonPress)){
 
-
         // clear the decimal memory so new input can have decimal, after each operator press
         calcMemory.decimal = '';
-
         
         if(calcMemory.mem1 && calcMemory.userInput && !calcMemory.operator ){
             // Only occurs once "=" is pressed, then user enters a number 
@@ -76,7 +74,6 @@ function handleInput(buttonPress){
 
         calcMemory.userInput += buttonPress;
         updateDisplay(calcMemory.userInput);
-        console.log(calcMemory);
     }
 }
 
@@ -111,7 +108,6 @@ function operate(){
     // 10000.0000000067 will still expand the grid
     result = Math.round(result*10000000000)/10000000000;
     updateDisplay(result);
-    console.log(calcMemory);
 };
 
 
@@ -121,25 +117,51 @@ function clearDisplayMemory() {calcMemory.userInput = ''}
 
 function updateDisplay(text) {calcDisplay.innerText = text}
 
+
+function addKeyboardShading(keyPress){
+    for (let index = 0; index < inputButtons.length; index++) {
+        if(inputButtons[index].value === keyPress)
+        inputButtons[index].classList.add("keyBoardActive")
+    }
+}
+
+function removeKeyboardShading(keyPress){
+    for (let index = 0; index < inputButtons.length; index++) {
+        if(inputButtons[index].value === keyPress)
+        inputButtons[index].classList.remove("keyBoardActive")
+    }
+}
+
 // init
 const calcMemory = {mem1:'', mem2:'', operator:'', userInput:'', decimal:''};
+
 const calcDisplay = document.getElementById('calculation');
-const inputButtons = document.getElementsByTagName("input");
+
+const inputButtons = document.getElementsByTagName("button");
+
 
 window.onload = function(){
     document.getElementById('calcContainer').addEventListener('mouseup', (event) => {
-        if (event.target.type === "button"){
-
-            handleInput(event.target.value)}
-        }),
-
+        if (event.target.type === "button"){handleInput(event.target.value)}}),
+        
     // keyboard support
-    document.addEventListener('keyup', (event) => {
+    document.addEventListener('keydown', (event) => { // add shading to keyboard buttons only.
         if (keyPress = event.key, ['Backspace','Delete'].includes(event.key)) keyPress = 'Del'; 
         else if (["=","Enter"].includes(event.key)) keyPress = "=";
 
         //ignore any other input not in list
         else if (!['+','-','*','/','.','0','1','2','3','4','5','6','7','8','9'].includes(keyPress)) return;
+        addKeyboardShading(keyPress);
+    })
 
+    document.addEventListener('keyup', (event) => { 
+        // remove shading on keyup and then handleInput() 
+        if (keyPress = event.key, ['Backspace','Delete'].includes(event.key)) keyPress = 'Del'; 
+        else if (["=","Enter"].includes(event.key)) keyPress = "=";
+
+        //ignore any other input not in list
+        else if (!['+','-','*','/','.','0','1','2','3','4','5','6','7','8','9'].includes(keyPress)) return;
+        
+        removeKeyboardShading(keyPress);
         handleInput(keyPress)})
     };
