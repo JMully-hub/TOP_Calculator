@@ -61,7 +61,7 @@ body{
 #calculation{
     grid-area: calc_area;
     margin: 30px;
-    /* display: flex;  */
+    display: flex; 
     align-items:center;
     padding-left: 10px;
     background-color: darkgrey;
